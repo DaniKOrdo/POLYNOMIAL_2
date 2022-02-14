@@ -22,14 +22,6 @@ public class Polynomial {
         return array;
     }
 
-    void invertArray(String[] array) {
-        for (int i = 0; i < array.length / 2; i++) {
-            String temp = array[i];
-            array[i] = array[array.length - 1 - i];
-            array[array.length - 1 - i] = temp;
-        }
-    }
-
     // Constructor a partir d'un string
     public Polynomial(String s) {
         this.cfs = getCfs(s);
@@ -40,17 +32,16 @@ public class Polynomial {
 
         int maxExp = getMaxExp(sToArray);
         
-        this.cfs = new float[maxExp + 1];
+        float[] cfs = new float[maxExp + 1];
 
         for (int i = 0; i < sToArray.length; i += 2) {
             int position = getExpValue(sToArray[i]);
             float cfsValue = getCfsValue(sToArray[i]);
             if (i > 1 && sToArray[i - 1].equals("-")) cfsValue *= -1;
-            this.cfs[position] += cfsValue;
-            System.out.println(cfsValue);
+            cfs[position] += cfsValue;
         }
-        System.out.println("---------------------------");
-        return this.cfs;
+
+        return cfs;
     }
 
     private float getCfsValue(String s) {
@@ -61,16 +52,19 @@ public class Polynomial {
             return Integer.parseInt(iToArray[0]);
         }
         if (s.contains("x")) {
-            String[] iToArray = s.split("x");
-            if (iToArray[0].equals("")) return 1;
-            return Integer.parseInt(iToArray[0]);
+            if (s.length() > 1) {
+                String[] iToArray = s.split("x");
+                if (iToArray[0].equals("")) return 1;
+                return Integer.parseInt(iToArray[0]);
+            }
+            return 1;
         }
 
         return Float.parseFloat(s);
     }
 
     private int getMaxExp(String[] sToArray) {
-        int maxExp = 0, actualExp = 0;
+        int maxExp = 0, actualExp;
         for (int i = 0; i < sToArray.length; i += 2) {
             actualExp = getExpValue(sToArray[i]);
             if (actualExp > maxExp) maxExp = actualExp;
@@ -89,9 +83,37 @@ public class Polynomial {
 
     // Suma el polinomi amb un altre. No modifica el polinomi actual (this). Genera un de nou
     public Polynomial add(Polynomial p) {
-        // Quiero que p (7x^2 + 10) se convierta en float[] para que sea un array de numeros
+        String pToString = p.toString();
+        float[] pCfs = getCfs(pToString);
 
-        return null;
+
+
+        int maxExpP = pCfs.length - 1;
+        int maxExpThis = this.cfs.length - 1;
+
+        int maxExpAll = Math.max(maxExpP, maxExpThis);
+
+        float[] result = new float[maxExpAll + 1];
+
+
+        for (int i = 0; i < result.length; i++) {
+            if (i < pCfs.length) result[i] += pCfs[i];
+            if (i < this.cfs.length) result[i] += this.cfs[i];
+        }
+
+        // MOSTRAR POR PANTALLA
+        for (float pCf : pCfs) {
+            System.out.print((int)pCf + ", ");
+        }
+        System.out.println();
+        for (float cf : this.cfs) {
+            System.out.print((int)cf + ", ");
+        }
+        System.out.println("\n-----------");
+        // -----------------------
+
+        invertArray(result);
+        return new Polynomial(result);
     }
 
     // Multiplica el polinomi amb un altre. No modifica el polinomi actual (this). Genera un de nou
@@ -121,9 +143,17 @@ public class Polynomial {
     @Override
     public String toString() { // 1,5 --> 5,1
         String x, result = "";
+        float[] cfs = this.cfs;
 
-        for (int i = 0; i < this.cfs.length; i++) {
-            if (this.cfs[i] != 0) {
+        //int lastZero = getLastZero(cfs);
+        System.out.println("result:");
+
+        for (float cf : cfs) {
+            System.out.println(cf);
+        }
+
+        for (int i = 0; i < cfs.length; i++) {
+            if (cfs[i] != 0) {
                 x = ponerX(i);
 
                 // Si no es el último numero de la array
@@ -132,7 +162,8 @@ public class Polynomial {
                     if ((int) cfs[i] > 0) {
                         result = " + " + (int) cfs[i] + x + result;
                     } else {
-                        result = " - " + ((int) cfs[i] * -1) + x + result;
+                        if (i == 2 && (cfs[2] == 1 || cfs[2] == -1)) result = " - " + x + result;
+                        else result = " - " + ((int) cfs[i] * -1) + x + result;
                     }
                 } else {
                     // Si es el último numero de la array
@@ -146,11 +177,28 @@ public class Polynomial {
                 }
             }
         }
-        // TODO Hacer que si hay un 0x^ quite el simbolo
-        if (result.equals(" + 6x")) return "6x";
+
+        if (result.length() > 1 && (result.charAt(1) == '+' || result.charAt(1) == '-'))
+            result = resultWithNo0(result);
 
         if (result.equals("")) return "0";
         return result;
+    }
+
+    private String resultWithNo0(String result) {
+        char splitResult = result.charAt(1);
+        String finalResult = result;
+
+        int position = result.length();
+
+        if (splitResult == '+') {
+            finalResult = result.substring(3,position);
+        }
+        if (splitResult == '-') {
+            finalResult = "-" + result.substring(3,position);
+        }
+
+        return finalResult;
     }
 
     private String ponerX(int i) {
