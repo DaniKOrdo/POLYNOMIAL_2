@@ -31,7 +31,7 @@ public class Polynomial {
         String[] sToArray = s.split(" ");
 
         int maxExp = getMaxExp(sToArray);
-        
+
         float[] cfs = new float[maxExp + 1];
 
         for (int i = 0; i < sToArray.length; i += 2) {
@@ -40,7 +40,6 @@ public class Polynomial {
             if (i > 1 && sToArray[i - 1].equals("-")) cfsValue *= -1;
             cfs[position] += cfsValue;
         }
-
         return cfs;
     }
 
@@ -86,8 +85,6 @@ public class Polynomial {
         String pToString = p.toString();
         float[] pCfs = getCfs(pToString);
 
-
-
         int maxExpP = pCfs.length - 1;
         int maxExpThis = this.cfs.length - 1;
 
@@ -95,22 +92,10 @@ public class Polynomial {
 
         float[] result = new float[maxExpAll + 1];
 
-
         for (int i = 0; i < result.length; i++) {
             if (i < pCfs.length) result[i] += pCfs[i];
             if (i < this.cfs.length) result[i] += this.cfs[i];
         }
-
-        // MOSTRAR POR PANTALLA
-        for (float pCf : pCfs) {
-            System.out.print((int)pCf + ", ");
-        }
-        System.out.println();
-        for (float cf : this.cfs) {
-            System.out.print((int)cf + ", ");
-        }
-        System.out.println("\n-----------");
-        // -----------------------
 
         invertArray(result);
         return new Polynomial(result);
@@ -118,7 +103,19 @@ public class Polynomial {
 
     // Multiplica el polinomi amb un altre. No modifica el polinomi actual (this). Genera un de nou
     public Polynomial mult(Polynomial p2) {
-        return null;
+        String pToString = p2.toString();
+        float[] pCfs = getCfs(pToString);
+
+        float[] result = new float[(this.cfs.length) * (pCfs.length)];
+
+        for (int i = 0; i < this.cfs.length; i++) {
+            for (int j = 0; j < pCfs.length; j++) {
+                result[i + j] += (this.cfs[i] * pCfs[j]);
+            }
+        }
+
+        invertArray(result);
+        return new Polynomial(result);
     }
 
     // Divideix el polinomi amb un altre. No modifica el polinomi actual (this). Genera un de nou
@@ -141,16 +138,9 @@ public class Polynomial {
 
     // Torna la representació en forma de String del polinomi. Override d'un mètode de la classe Object
     @Override
-    public String toString() { // 1,5 --> 5,1
+    public String toString() {
         String x, result = "";
         float[] cfs = this.cfs;
-
-        //int lastZero = getLastZero(cfs);
-        System.out.println("result:");
-
-        for (float cf : cfs) {
-            System.out.println(cf);
-        }
 
         for (int i = 0; i < cfs.length; i++) {
             if (cfs[i] != 0) {
@@ -159,8 +149,10 @@ public class Polynomial {
                 // Si no es el último numero de la array
                 if (i + 1 < cfs.length) {
                     // Si es un numero positivo
-                    if ((int) cfs[i] > 0) {
+                    if ((int) cfs[i] > 1) {
                         result = " + " + (int) cfs[i] + x + result;
+                    } else if (cfs[i] == 1) {
+                        result = x + result;
                     } else {
                         if (i == 2 && (cfs[2] == 1 || cfs[2] == -1)) result = " - " + x + result;
                         else result = " - " + ((int) cfs[i] * -1) + x + result;
@@ -191,12 +183,8 @@ public class Polynomial {
 
         int position = result.length();
 
-        if (splitResult == '+') {
-            finalResult = result.substring(3,position);
-        }
-        if (splitResult == '-') {
-            finalResult = "-" + result.substring(3,position);
-        }
+        if (splitResult == '+') finalResult = result.substring(3, position);
+        if (splitResult == '-') finalResult = "-" + result.substring(3, position);
 
         return finalResult;
     }
