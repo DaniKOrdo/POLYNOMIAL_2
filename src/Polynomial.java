@@ -3,16 +3,17 @@ import java.util.Objects;
 public class Polynomial {
     float[] cfs;
 
-    // Constructor per defecte. Genera un polinomi zero
+    // Constructor por defecto. Genera un polinomio cero
     public Polynomial() {
         this.cfs = new float[]{0};
     }
 
-    // Constructor a partir dels coeficients del polinomi en forma d'array
+    // Constructor a partir de los coeficientes del polinomio en forma de array
     public Polynomial(float[] cfs) {
         this.cfs = invertArray(cfs);
     }
 
+    // Función para invertir un array de floats
     private float[] invertArray(float[] array) {
         for (int i = 0; i < array.length / 2; i++) {
             float temp = array[i];
@@ -22,7 +23,7 @@ public class Polynomial {
         return array;
     }
 
-    // Constructor a partir d'un string
+    // Constructor a partir de un string
     public Polynomial(String s) {
         this.cfs = getCfs(s);
     }
@@ -80,7 +81,7 @@ public class Polynomial {
         return 0;
     }
 
-    // Suma el polinomi amb un altre. No modifica el polinomi actual (this). Genera un de nou
+    // Suma el polinomio con otro. No modifica el polinomio actual (this). Genera uno nuevo
     public Polynomial add(Polynomial p) {
         String pToString = p.toString();
         float[] pCfs = getCfs(pToString);
@@ -101,10 +102,20 @@ public class Polynomial {
         return new Polynomial(result);
     }
 
-    // Multiplica el polinomi amb un altre. No modifica el polinomi actual (this). Genera un de nou
+    // Multiplica el polinomio con otro. No modifica el polinomio actual (this). Genera uno nuevo
     public Polynomial mult(Polynomial p2) {
         String pToString = p2.toString();
         float[] pCfs = getCfs(pToString);
+
+System.out.println("-------------------------");
+        for (int i = 0; i < this.cfs.length; i++) {
+            System.out.print(this.cfs[i]+ ", ");
+        }
+        System.out.println();
+        for (int i = 0; i < pCfs.length; i++) {
+            System.out.print(pCfs[i]+ ", ");
+        }
+        System.out.println();
 
         float[] result = new float[(this.cfs.length) * (pCfs.length)];
 
@@ -118,25 +129,25 @@ public class Polynomial {
         return new Polynomial(result);
     }
 
-    // Divideix el polinomi amb un altre. No modifica el polinomi actual (this). Genera un de nou
-    // Torna el quocient i també el residu (ambdós polinomis)
+    // Divide el polinomio con otro. No modifica el polinomio actual (this). Genera uno nuevo
+    // Vuelve el cociente y también el residuo (ambos polinomios)
     public Polynomial[] div(Polynomial p2) {
         return null;
     }
 
-    // Troba les arrels del polinomi, ordenades de menor a major
+    // Encuentra las raíces del polinomio, ordenadas de menor a mayor
     public float[] roots() {
         return null;
     }
 
-    // Torna "true" si els polinomis són iguals. Això és un override d'un mètode de la classe Object
+    // Vuelve "true" si los polinomios son iguales. Esto es un override de un método de la clase Object
     @Override
     public boolean equals(Object o) {
         Polynomial p = (Polynomial) o;
         return Objects.equals(p.toString(), this.toString());
     }
 
-    // Torna la representació en forma de String del polinomi. Override d'un mètode de la classe Object
+    // Vuelve la representación en forma de String del polinomio. Override de un método de la clase Object
     @Override
     public String toString() {
         String x, result = "";
