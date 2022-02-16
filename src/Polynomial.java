@@ -104,24 +104,11 @@ public class Polynomial {
 
     // Multiplica el polinomio con otro. No modifica el polinomio actual (this). Genera uno nuevo
     public Polynomial mult(Polynomial p2) {
-        String pToString = p2.toString();
-        float[] pCfs = getCfs(pToString);
-
-System.out.println("-------------------------");
-        for (int i = 0; i < this.cfs.length; i++) {
-            System.out.print(this.cfs[i]+ ", ");
-        }
-        System.out.println();
-        for (int i = 0; i < pCfs.length; i++) {
-            System.out.print(pCfs[i]+ ", ");
-        }
-        System.out.println();
-
-        float[] result = new float[(this.cfs.length) * (pCfs.length)];
+        float[] result = new float[(this.cfs.length) * (p2.cfs.length)];
 
         for (int i = 0; i < this.cfs.length; i++) {
-            for (int j = 0; j < pCfs.length; j++) {
-                result[i + j] += (this.cfs[i] * pCfs[j]);
+            for (int j = 0; j < p2.cfs.length; j++) {
+                result[i + j] += (this.cfs[i] * p2.cfs[j]);
             }
         }
 
@@ -131,7 +118,9 @@ System.out.println("-------------------------");
 
     // Divide el polinomio con otro. No modifica el polinomio actual (this). Genera uno nuevo
     // Vuelve el cociente y también el residuo (ambos polinomios)
-    public Polynomial[] div(Polynomial p2) {
+    public Polynomial[] div(Polynomial p2) { //1, 0, -6, 0, 8 entre 1, -1 coeficiente 1, 1, -5, -5 resto 3
+        float[] dividendo = this.cfs;
+        float[] divisor = p2.cfs;
         return null;
     }
 
@@ -152,6 +141,10 @@ System.out.println("-------------------------");
     public String toString() {
         String x, result = "";
         float[] cfs = this.cfs;
+System.out.println("-------");
+        for (int i = 0; i < this.cfs.length; i++) {
+            System.out.print(this.cfs[i] + ", ");
+        }
 
         for (int i = 0; i < cfs.length; i++) {
             if (cfs[i] != 0) {
@@ -162,11 +155,14 @@ System.out.println("-------------------------");
                     // Si es un numero positivo
                     if ((int) cfs[i] > 1) {
                         result = " + " + (int) cfs[i] + x + result;
+                    } else if (cfs[i] == 1 && cfs[i + 1] == 1) {
+                        result = " + " + x + result;
                     } else if (cfs[i] == 1) {
                         result = x + result;
+                    } else if (i == 2 && cfs[2] == -1) {
+                        result = " - " + x + result;
                     } else {
-                        if (i == 2 && (cfs[2] == 1 || cfs[2] == -1)) result = " - " + x + result;
-                        else result = " - " + ((int) cfs[i] * -1) + x + result;
+                        result = " - " + ((int) cfs[i] * -1) + x + result;
                     }
                 } else {
                     // Si es el último numero de la array
