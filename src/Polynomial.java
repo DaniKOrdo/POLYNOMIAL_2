@@ -1,7 +1,7 @@
 import java.util.Objects;
 
 public class Polynomial {
-    float[] cfs;
+    float[] cfs; // esto atributos polynomio
 
     // Constructor por defecto. Genera un polinomio cero
     public Polynomial() {
@@ -10,10 +10,11 @@ public class Polynomial {
 
     // Constructor a partir de los coeficientes del polinomio en forma de array
     public Polynomial(float[] cfs) {
+        // TODO: asegurarnos que no hay ceros no significaati
         this.cfs = invertArray(cfs);
     }
 
-    // Función para invertir un array de floats
+    // Función o método para invertir un array de floats
     private float[] invertArray(float[] array) {
         for (int i = 0; i < array.length / 2; i++) {
             float temp = array[i];
@@ -118,9 +119,22 @@ public class Polynomial {
 
     // Divide el polinomio con otro. No modifica el polinomio actual (this). Genera uno nuevo
     // Vuelve el cociente y también el residuo (ambos polinomios)
-    public Polynomial[] div(Polynomial p2) { //1, 0, -6, 0, 8 entre 1, -1 coeficiente 1, 1, -5, -5 resto 3
+    public Polynomial[] div(Polynomial p2) { //8.0, 0.0, -6.0, 0.0, 1.0 entre -1, 1 coeficiente 1, 1, -5, -5 resto 3
         float[] dividendo = this.cfs;
         float[] divisor = p2.cfs;
+        float[] cociente = new float[this.cfs.length + p2.cfs.length];
+
+
+
+
+        System.out.println("\nDividedo:");
+        for (int i = 0; i < dividendo.length; i++) {
+            System.out.print(dividendo[i] + ", ");
+        }
+        System.out.println("\nDivisor:");
+        for (int i = 0; i < divisor.length; i++) {
+            System.out.print(divisor[i] + ", ");
+        }
         return null;
     }
 
@@ -133,7 +147,9 @@ public class Polynomial {
     @Override
     public boolean equals(Object o) {
         Polynomial p = (Polynomial) o;
-        return Objects.equals(p.toString(), this.toString());
+        Polynomial p2 = this;
+
+        return p.toString().equals(p2.toString());
     }
 
     // Vuelve la representación en forma de String del polinomio. Override de un método de la clase Object
