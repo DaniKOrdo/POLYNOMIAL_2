@@ -119,23 +119,24 @@ public class Polynomial {
 
     // Divide el polinomio con otro. No modifica el polinomio actual (this). Genera uno nuevo
     // Vuelve el cociente y también el residuo (ambos polinomios)
-    public Polynomial[] div(Polynomial p2) { //8.0, 0.0, -6.0, 0.0, 1.0 entre -1, 1 coeficiente 1, 1, -5, -5 resto 3
-        float[] dividendo = this.cfs;
-        float[] divisor = p2.cfs;
-        float[] cociente = new float[this.cfs.length + p2.cfs.length];
+    public Polynomial[] div(Polynomial p2) { // 1, 0, -6, 0, 8 entre 1, -1 coeficiente 1, 1, -5, -5 resto 3
+        float[] dividendo = invertArray(this.cfs);
+        float[] divisor = invertArray(p2.cfs);
+        float[] cociente = new float[dividendo.length - (divisor.length - 1)];
+        float[] resto = new float[divisor.length];
 
-
-
-
-        System.out.println("\nDividedo:");
-        for (int i = 0; i < dividendo.length; i++) {
-            System.out.print(dividendo[i] + ", ");
+        for (int i = 0; i < dividendo.length - (resto.length - 1); i++) {
+            cociente[i] = dividendo[i] / divisor[0];
+            for (int j = 0; j < resto.length; j++) {
+                resto[j] = dividendo[j + i] - (divisor[j] * cociente[i]);
+                dividendo[i + j] = resto[j];
+            }
         }
-        System.out.println("\nDivisor:");
-        for (int i = 0; i < divisor.length; i++) {
-            System.out.print(divisor[i] + ", ");
-        }
-        return null;
+
+        Polynomial[] res = new Polynomial[2];
+        res[0] = new Polynomial(cociente);
+        res[1] = new Polynomial(resto);
+        return res;
     }
 
     // Encuentra las raíces del polinomio, ordenadas de menor a mayor
@@ -157,10 +158,6 @@ public class Polynomial {
     public String toString() {
         String x, result = "";
         float[] cfs = this.cfs;
-System.out.println("-------");
-        for (int i = 0; i < this.cfs.length; i++) {
-            System.out.print(this.cfs[i] + ", ");
-        }
 
         for (int i = 0; i < cfs.length; i++) {
             if (cfs[i] != 0) {
@@ -168,7 +165,7 @@ System.out.println("-------");
 
                 // Si no es el último numero de la array
                 if (i + 1 < cfs.length) {
-                    // Si es un numero positivo
+                    // Si es un numero positivo mayor a 1
                     if ((int) cfs[i] > 1) {
                         result = " + " + (int) cfs[i] + x + result;
                     } else if (cfs[i] == 1 && cfs[i + 1] == 1) {
