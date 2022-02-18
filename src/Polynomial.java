@@ -13,7 +13,6 @@ public class Polynomial {
         this.cfs = invertArray(cfs);
     }
 
-
     private float[] removeZeros(float[] cfs) {
         // Buscamos la posición del primer número que no sea 0
         int count = 0;
@@ -132,10 +131,7 @@ public class Polynomial {
             if (i < this.cfs.length) result[i] += this.cfs[i];
         }
 
-        // En caso de que el array tenga ceros a la izquierda innecesarios se quitan
-        invertArray(result);
-        if (result.length > 1 && result[0] == 0) result = removeZeros(result);
-        return new Polynomial(result);
+        return new Polynomial(invertArray(result));
     }
 
     // Multiplica el polinomio con otro. No modifica el polinomio actual (this). Genera uno nuevo
@@ -149,10 +145,7 @@ public class Polynomial {
             }
         }
 
-        // En caso de que el array tenga ceros a la izquierda innecesarios se quitan
-        invertArray(result);
-        if (result.length > 1 && result[0] == 0) result = removeZeros(result);
-        return new Polynomial(result);
+        return new Polynomial(invertArray(result));
     }
 
     // Divide el polinomio con otro. No modifica el polinomio actual (this). Genera uno nuevo
