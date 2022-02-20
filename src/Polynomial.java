@@ -118,12 +118,12 @@ public class Polynomial {
         float[] pCfs = getCfs(pToString);
 
         // Se obtiene el mayor exponente para crear el array result
-        int maxExpP = pCfs.length - 1;
-        int maxExpThis = this.cfs.length - 1;
+        int maxExpP = pCfs.length;
+        int maxExpThis = this.cfs.length;
 
         int maxExpAll = Math.max(maxExpP, maxExpThis);
 
-        float[] result = new float[maxExpAll + 1];
+        float[] result = new float[maxExpAll];
 
         // Se mira si el la longitud (i) de result es menor que la de los 2 cfs y se suma el valor a result
         for (int i = 0; i < result.length; i++) {
@@ -167,10 +167,7 @@ public class Polynomial {
             }
         }
 
-        Polynomial[] res = new Polynomial[2];
-        res[0] = new Polynomial(cociente);
-        res[1] = new Polynomial(resto);
-        return res;
+        return new Polynomial[]{ new Polynomial(cociente), new Polynomial(resto)};
     }
 
     // Encuentra las raíces del polinomio, ordenadas de menor a mayor
@@ -178,7 +175,7 @@ public class Polynomial {
         return null;
     }
 
-    // Vuelve "true" si los polinomios son iguales. Esto es un override de un método de la clase Object
+    // Devuelve "true" si los polinomios son iguales. Esto es un override de un método de la clase Object
     @Override
     public boolean equals(Object o) {
         Polynomial p = (Polynomial) o;
@@ -187,7 +184,7 @@ public class Polynomial {
         return p.toString().equals(p2.toString());
     }
 
-    // Vuelve la representación en forma de String del polinomio. Override de un método de la clase Object
+    // Devuelve la representación en forma de String del polinomio. Override de un método de la clase Object
     @Override
     public String toString() {
         float[] cfs = this.cfs;
@@ -229,7 +226,7 @@ public class Polynomial {
         return result;
     }
 
-    // Función para devolver el exponente
+    // Función para devolver un valor según la posición del exponente
     private String putLetterX(int i) {
         if (i == 0) return "";
         if (i == 1) return "x";
