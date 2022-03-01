@@ -7,13 +7,17 @@ Un polinomi és una expressió algebraica formada per la suma de diversos monomi
 ## Són polinomis:
 
 • 3 x2+8 x−1
+
 • −8 x7−x2
+
 • x+9
+
 • 7
 
 Existeixen certs criteris a l'hora de representar un polinomi, tot i que no són normes d'aplicació obligatòria:
 
 • Quan dos termes dins d'un polinomi es poden sumar, llavors s'utilitza el polinomi resultant de sumar aquests termes. Per exemple: x2+4 x−3 x+4 s'escriuria x2+x+4
+
 • Els termes s'ordenen segons el grau de l'últim factor dels termes, en ordre decreixent. Per exemple, 3 x5+7+4 x2+6 x s'escriuria 3 x5+4 x2+6 x+7
 
 ## Operacions
